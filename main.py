@@ -16,7 +16,7 @@ for i in range(1,(num_doc+1)):
     df2.to_excel(f"output_{i}.xlsx")
 
 
-
+#local locations
 #   C:\Users\kingo\Downloads\exhibit-13.pdf
 # C:\Users\kingo\PycharmProjects\FinancialAutomation\Annual Report_DG2023.pdf
 
