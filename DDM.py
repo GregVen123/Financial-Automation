@@ -44,12 +44,10 @@ cf_cols.insert(0,"Cash Flows Statement")
 cf_cols.insert(1,"TTM")
 income_statement = income_statement.drop(0)
 cash_flows_statement.columns = cf_cols
-income_statement["2023"].astype("float")
-income_statement["2022"].astype("float")
+#setting errors = "coerce" sets any erroe to NaN
+#since column 1 are strings and the others are ints, the entire data in dataframe are strings so this converts them
+for column in income_statement.columns[1:]:
+    income_statement[column] = pd.to_numeric(income_statement[column], errors="coerce").astype("int")
+print(income_statement.dtypes)
 
-alpha= income_statement.loc[(income_statement["2023"] == 0) & (income_statement["2022"] == 0)]
-print(alpha)
-#balance, cash, income
-#C:\Users\kingo\PycharmProjects\Valuation_Project\AAPL Balance Sheet Statement (Annual) - Discounting Cash Flows.xlsx
-#C:\Users\kingo\PycharmProjects\Valuation_Project\AAPL Cash Flow Statement (Annual) - Discounting Cash Flows.xlsx
-#C:\Users\kingo\PycharmProjects\Valuation_Project\AAPL Income Statement (Annual) - Discounting Cash Flows.xlsx
+
