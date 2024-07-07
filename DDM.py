@@ -74,14 +74,13 @@ except:
 charlie = np.zeros((3,5))
 print(charlie)
 
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DRI&apikey=DEMO"
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=DEMO"
 r = requests.get(url)
 
 print(r.status_code)
 
 data = r.json()
-df = pd.DataFrame(data)
-print(df)
-
-#delta = pd.DataFrame(data)
-#print(delta)
+data2 = (data["Monthly Time Series"])
+df = pd.DataFrame(data2)
+alpha = df.loc["4. close"]
+print(alpha)
