@@ -1,3 +1,5 @@
+import json
+
 import pandas as pd
 import numpy as np
 from openpyxl import *
@@ -48,6 +50,38 @@ cash_flows_statement.columns = cf_cols
 #since column 1 are strings and the others are ints, the entire data in dataframe are strings so this converts them
 for column in income_statement.columns[1:]:
     income_statement[column] = pd.to_numeric(income_statement[column], errors="coerce").astype("int")
-print(income_statement.dtypes)
+
+def CAPM(risk_free_rate, beta,market_rate):
+        return (risk_free_rate + (beta*(market_rate-risk_free_rate)))
+
+try:
+    market_rate = float(input("What is your preferred market rate (in decimal form e.g .08)?: "))
+    risk_free_rate = float(input("What is the risk free rate in decimal form?: "))
+    beta = float(input("What is the stock Beta?: "))
+except:
+        print("Not a valid int")
+
+cost_of_equity = CAPM(risk_free_rate,beta,market_rate)
+
+print(cost_of_equity)
+
+try:
+    stages = (int(input("Will the DDM be 1 or 2 stage (enter either 1 or 2 ): ")))
+except:
+        print('ERROR: ENTER EITHER 1 or 2 IN NUMBER FORM')
 
 
+charlie = np.zeros((3,5))
+print(charlie)
+
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DRI&apikey=DEMO"
+r = requests.get(url)
+
+print(r.status_code)
+
+data = r.json()
+df = pd.DataFrame(data)
+print(df)
+
+#delta = pd.DataFrame(data)
+#print(delta)
