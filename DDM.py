@@ -74,7 +74,7 @@ except:
 charlie = np.zeros((3,5))
 print(charlie)
 
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=DEMO"
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
 r = requests.get(url)
 
 print(r.status_code)
@@ -84,12 +84,23 @@ data2 = (data["Monthly Time Series"])
 df = pd.DataFrame(data2)
 alpha = df.loc["4. close"]
 print(alpha)
-#getting dividend data
-urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=DEMO"
+
+urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
 rd = requests.get(urd)
 div_data = rd.json()
 
 div_data_df = pd.DataFrame(div_data["data"])
-#dropping the unnecessary columns
+
 div_data_df = div_data_df.drop(["declaration_date","record_date","payment_date"],axis=1)
 print(div_data_df)
+dividend_amount_Q = []
+dividend_amount_Y = []
+for i in div_data_df["amount"]:
+    dividend_amount_Q.append(i)
+qtr_dividend = np.array(dividend_amount_Q, dtype="float")
+
+for i in range(0,(len(qtr_dividend)//4)):
+    i*=4
+    dividend_amount_Y.append(qtr_dividend[i]+qtr_dividend[i+1]+qtr_dividend[i+2]+qtr_dividend[i+3])
+
+print(dividend_amount_Y)
