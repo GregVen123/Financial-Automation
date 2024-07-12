@@ -74,7 +74,7 @@ except:
 charlie = np.zeros((3,5))
 print(charlie)
 
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
+url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=DEMO"
 r = requests.get(url)
 
 print(r.status_code)
@@ -85,7 +85,7 @@ df = pd.DataFrame(data2)
 alpha = df.loc["4. close"]
 print(alpha)
 
-urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
+urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=DEMO"
 rd = requests.get(urd)
 div_data = rd.json()
 
