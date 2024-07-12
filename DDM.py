@@ -20,10 +20,10 @@ length_test = []
 for i in income_statement.columns:
     length_test.append(i)
 k = 1
-for i in range(len(length_test)-2):
+for i in range(len(length_test)-2): #replacing column headers with the year
     is_cols.append(str(2024-k))
     k+=1
-is_cols.insert(0,"Income Statement")
+is_cols.insert(0,"Income Statement") #first two column headers should be this
 is_cols.insert(1,"TTM")
 
 income_statement.columns = is_cols
@@ -50,7 +50,7 @@ cash_flows_statement.columns = cf_cols
 #since column 1 are strings and the others are ints, the entire data in dataframe are strings so this converts them
 for column in income_statement.columns[1:]:
     income_statement[column] = pd.to_numeric(income_statement[column], errors="coerce").astype("int")
-
+#cost of equity
 def CAPM(risk_free_rate, beta,market_rate):
         return (risk_free_rate + (beta*(market_rate-risk_free_rate)))
 
@@ -64,7 +64,7 @@ except:
 cost_of_equity = CAPM(risk_free_rate,beta,market_rate)
 
 print(cost_of_equity)
-
+#user inputs type of DDM
 try:
     stages = (int(input("Will the DDM be 1 or 2 stage (enter either 1 or 2 ): ")))
 except:
@@ -84,3 +84,12 @@ data2 = (data["Monthly Time Series"])
 df = pd.DataFrame(data2)
 alpha = df.loc["4. close"]
 print(alpha)
+#getting dividend data
+urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=DEMO"
+rd = requests.get(urd)
+div_data = rd.json()
+
+div_data_df = pd.DataFrame(div_data["data"])
+#dropping the unnecessary columns
+div_data_df = div_data_df.drop(["declaration_date","record_date","payment_date"],axis=1)
+print(div_data_df)
