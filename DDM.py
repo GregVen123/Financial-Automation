@@ -63,44 +63,69 @@ except:
 
 cost_of_equity = CAPM(risk_free_rate,beta,market_rate)
 
-print(cost_of_equity)
+print(f"the cost of equity is {cost_of_equity}")
 #user inputs type of DDM
-try:
-    stages = (int(input("Will the DDM be 1 or 2 stage (enter either 1 or 2 ): ")))
-except:
-        print('ERROR: ENTER EITHER 1 or 2 IN NUMBER FORM')
+#try:
+#    stages = (int(input("Will the DDM be 1 or 2 stage (enter either 1 or 2 ): ")))
+#except:
+#        print('ERROR: ENTER EITHER 1 or 2 IN NUMBER FORM')
 
+#Setting up the DDM
+dividend_2024 = float(input("This year's dividend is? : "))
+stage_1_rate = float(input("Stage 1 growth rate (decimal form): "))
+stage_2_rate = float(input("Stage 2 growth rate (decimal form): "))
+total_years = int(input("How many years is your model?: "))
+years =[]
+for i in range(total_years +1): #creating years plus 1 since DDM requires next dividend
+    years.append(i)
+dividends = [dividend_2024]
+for i in range(total_years): #this creates an array of future dividends based on stage 1 growth rate
+    dividends.append(dividend_2024*(1+stage_1_rate)**(i+1))
 
-charlie = np.zeros((3,5))
-print(charlie)
+dividends = np.around(dividends,3)
+def present_value(fv,r,n):
+    return(round(float(fv/((1+r)**n)),3))
 
-url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=DEMO"
-r = requests.get(url)
+present_value(100,.11,3)
 
-print(r.status_code)
+pv_dividends =[] #gets the present value of the stage 1 dividends
+for i in range(len(dividends)):
+    pv_dividends.append(present_value(dividends[i],cost_of_equity,years[i]))
 
-data = r.json()
-data2 = (data["Monthly Time Series"])
-df = pd.DataFrame(data2)
-alpha = df.loc["4. close"]
-print(alpha)
+print(pv_dividends)
+stage_1_pv = sum(pv_dividends[1:])
+stage_2_value = (dividends[max(years)]*(1+stage_2_rate)/(cost_of_equity-stage_2_rate))
+stage_2_pv =present_value(stage_2_value,cost_of_equity,max(years))
+intrinsic_value = stage_1_pv+stage_2_pv
+print(intrinsic_value)
+#url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
+#r = requests.get(url)
 
-urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=DEMO"
-rd = requests.get(urd)
-div_data = rd.json()
+#print(r.status_code)
 
-div_data_df = pd.DataFrame(div_data["data"])
+#data = r.json()
+#data2 = (data["Monthly Time Series"])
+#df = pd.DataFrame(data2)
+#alpha = df.loc["4. close"]
+#print(alpha)
 
-div_data_df = div_data_df.drop(["declaration_date","record_date","payment_date"],axis=1)
-print(div_data_df)
-dividend_amount_Q = []
-dividend_amount_Y = []
-for i in div_data_df["amount"]:
-    dividend_amount_Q.append(i)
-qtr_dividend = np.array(dividend_amount_Q, dtype="float")
+#urd = "https://www.alphavantage.co/query?function=DIVIDENDS&symbol=DRI&apikey=VGMETC1M5S3ME3AH"
+#rd = requests.get(urd)
+#div_data = rd.json()
 
-for i in range(0,(len(qtr_dividend)//4)):
-    i*=4
-    dividend_amount_Y.append(qtr_dividend[i]+qtr_dividend[i+1]+qtr_dividend[i+2]+qtr_dividend[i+3])
+#div_data_df = pd.DataFrame(div_data["data"])
 
-print(dividend_amount_Y)
+#div_data_df = div_data_df.drop(["declaration_date","record_date","payment_date"],axis=1)
+#print(div_data_df)
+#dividend_amount_Q = []
+#dividend_amount_Y = []
+#for i in div_data_df["amount"]:
+#    dividend_amount_Q.append(i)
+#qtr_dividend = np.array(dividend_amount_Q, dtype="float")
+#put quarterly data into years
+#for i in range(0,(len(qtr_dividend)//4)):
+#    i*=4
+#    dividend_amount_Y.append(qtr_dividend[i]+qtr_dividend[i+1]+qtr_dividend[i+2]+qtr_dividend[i+3])
+
+#print(dividend_amount_Y)
+
