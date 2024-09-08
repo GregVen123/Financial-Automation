@@ -86,8 +86,6 @@ dividends = np.around(dividends,3)
 def present_value(fv,r,n):
     return(round(float(fv/((1+r)**n)),3))
 
-present_value(100,.11,3)
-
 pv_dividends =[] #gets the present value of the stage 1 dividends
 for i in range(len(dividends)):
     pv_dividends.append(present_value(dividends[i],cost_of_equity,years[i]))
