@@ -6,6 +6,7 @@ from openpyxl import *
 import datetime
 import requests
 
+#financial statements will be used in an updated version, the DDM does not use lines 11-53, starts at line 54
 #putting data in dataframe
 balance_sheet1 = pd.read_excel("AAPL Balance Sheet Statement (Annual) - Discounting Cash Flows.xlsx")
 cash_flows_statement1 = pd.read_excel("AAPL Cash Flow Statement (Annual) - Discounting Cash Flows.xlsx")
