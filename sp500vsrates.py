@@ -22,8 +22,6 @@ list1 = dfsp["Close"].tolist()
 spclosea = []
 for i in list1:
     spclosea.append(i.replace(",",""))
-#put 0 because the original dataframe naturally has one more spot that the percent changes cuz theres no percent change for day 1 so set it to 0
-#or line 29 will cause an error cuz u can't append a list with a different index #
 spclose = [0]
 for i in spclosea:
     spclose.append(float(i))
