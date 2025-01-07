@@ -14,10 +14,21 @@ for i in to_float:
 msft["Close/Last"] = to_flaot2
 search = Fama[Fama["Date"] == 20150102]
 Fama = Fama.drop(index=range(0,23385))
-New_fama = []
+New_mk = []
 for i in range(len(Fama["Mkt-RF"])):
-    New_fama.append(Fama.iloc[i]["Mkt-RF"]/100)
-Fama["Mkt-RF"] = New_fama
+    New_mk.append(Fama.iloc[i]["Mkt-RF"]/100)
+Fama["Mkt-RF"] = New_mk
+
+new_smb = []
+for i in range(len(Fama["SMB"])):
+    new_smb.append(Fama.iloc[i]["SMB"]/100)
+Fama["SMB"] = new_smb
+
+new_hml = []
+for i in range(len(Fama["HML"])):
+    new_hml.append(Fama.iloc[i]["HML"]/100)
+Fama["HML"] = new_hml
+
 
 print(Fama)
 msft = msft.drop(index=range(0,33))
@@ -31,12 +42,15 @@ for i in range(len(msft)-1):
 msft_daily_change = np.array(msft_daily_change)
 msft_daily_change = np.around(msft_daily_change,5)
 reg = LinearRegression()
-Xpart = np.array(Fama["Mkt-RF"])
-Xpart = Xpart.reshape(-1,1)
+#Xpart = np.array(Fama["Mkt-RF"])
+#Xpart = Xpart.reshape(-1,1)
+
+Xpart = Fama[["Mkt-RF","SMB","HML"]]
 Ypart= msft_daily_change
 reg.fit(Xpart,Ypart)
 msft["Percent Change"] = msft_daily_change
-print(reg.coef_)
-#Beta for market risk premium
-print(reg.intercept_)
+print(f'The Betas are in order of Market, SMB, MHL {reg.coef_}')
+
+print(f' The intercept is {reg.intercept_}')
 res = (min(msft["Percent Change"]))
+
