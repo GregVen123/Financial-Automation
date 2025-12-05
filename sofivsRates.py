@@ -84,7 +84,6 @@ model_sm2 = sm.OLS(y2, X_sm2).fit()
 
 print(model_sm2.summary())
 
-
 #**SAME THING BUT ELIMINATING NO CHANGES**
 # treasuryvssofi2 = treasuryvssofi[treasuryvssofi['Rate Change %'] != 0]
 
