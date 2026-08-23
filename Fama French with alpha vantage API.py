@@ -5,6 +5,7 @@ import plotly.express as px
 import pypfopt
 from dotenv import load_dotenv
 import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
@@ -51,3 +52,5 @@ result = pull_stock_data()
 percent_results = result.pct_change().dropna()
 
 result.to_csv('output.csv', index =True)
+print(result)
+print(os.getcwd())
